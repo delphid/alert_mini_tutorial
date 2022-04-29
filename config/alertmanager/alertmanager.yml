@@ -1,0 +1,19 @@
+global:
+
+route:
+  group_by: ['app']
+  receiver: 'my-receiver'
+  group_wait: 30s
+  group_interval: 1m
+  repeat_interval: 3h
+  routes:
+  - matchers:
+    - app=my_app
+    receiver: 'my-receiver'
+
+receivers:
+  - name: 'my-receiver'
+    webhook_configs:
+      - url: http://host.docker.internal:2112/alert
+        max_alerts: 5
+        send_resolved: true

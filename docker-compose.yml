@@ -1,0 +1,32 @@
+services:
+  web:
+    container_name: my-app
+    build: .
+    networks:
+      - promNet
+    ports:
+      - 2112:2112
+    volumes:
+      - ./log:/app/log
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    networks:
+      - promNet
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config:/etc/prometheus
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager
+    networks:
+      - promNet
+    ports:
+      - 9093:9093
+    volumes:
+      - ./config/alertmanager:/etc/alertmanager
+networks:
+  promNet:
+    driver: bridge
+    name: promNet
