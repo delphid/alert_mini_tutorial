@@ -1,8 +1,10 @@
 start:
 	docker-compose up
-u:
-	curl localhost:2112/modify/2
-d:
-	curl localhost:2112/modify/0
-c:
-	curl localhost:2112/modify/$v
+ua1:
+	curl localhost:2112/modify_a/1/2
+da1:
+	curl localhost:2112/modify_a/1/0
+ua2:
+	curl localhost:2112/modify_a/2/2
+da2:
+	curl localhost:2112/modify_a/2/0

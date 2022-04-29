@@ -3,6 +3,7 @@ package main
 import (
         "fmt"
         "strconv"
+        "time"
 
         "go.uber.org/zap"
         "go.uber.org/zap/zapcore"
@@ -44,13 +45,24 @@ func NewLogger() (*zap.Logger, error) {
   encoderConfig.TimeKey = "time"
   encoderConfig.LevelKey = ""
   encoderConfig.CallerKey = ""
-  encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("2006/01/02 15:04:05.000")
+  encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout(time.RFC3339)
   cfg.EncoderConfig =encoderConfig
   return cfg.Build()
 }
 
 var (
     log, _ = NewLogger()
+)
+
+var (
+    gaugeA = promauto.NewGaugeVec(prometheus.GaugeOpts{
+        Name: "gauge_a",
+        Help: "this is gauge_a",
+    }, []string{"proc"})
+    gaugeB = promauto.NewGauge(prometheus.GaugeOpts{
+        Name: "gauge_b",
+        Help: "this is gauge_b",
+    })
 )
 
 func alert(c *gin.Context) {
@@ -67,24 +79,26 @@ func alert(c *gin.Context) {
     log.Info("receive alert", zap.String("status", req.Status), zap.Int("len", alertsLen), zap.Any("alerts_status", alertsStatus), zap.Any("full_massage", req))
 }
 
-func modify(c *gin.Context) {
+func modifyA(c *gin.Context) {
+    proc := c.Param("proc")
     value, _ := strconv.ParseFloat(c.Param("value"), 64)
-    valueGauge.Set(value)
-    log.Info("change gauge", zap.Float64("value", value))
-    fmt.Println("set value to: ", value)
+    gaugeA.WithLabelValues(proc).Set(value)
+    log.Info("change gauge a", zap.String("proc", proc), zap.Float64("value", value))
 }
 
-var (
-        valueGauge = promauto.NewGauge(prometheus.GaugeOpts{
-                Name: "my_gauge",
-                Help: "this is my gauge",
-        })
-)
+func modifyB(c *gin.Context) {
+    value, _ := strconv.ParseFloat(c.Param("value"), 64)
+    gaugeB.Set(value)
+    log.Info("change gauge b", zap.Float64("value", value))
+    fmt.Println("change gauge b: ", value)
+}
+
 
 func main() {
     router := gin.Default()
     router.GET("/metrics", gin.WrapH(promhttp.Handler()))
-    router.GET("/modify/:value", modify)
+    router.GET("/modify_a/:proc/:value", modifyA)
+    router.GET("/modify_b/:value", modifyB)
     router.POST("/alert", alert)
     router.Run("0.0.0.0:2112")
 }

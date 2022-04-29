@@ -2,7 +2,7 @@ groups:
 - name: my_alert_group
   rules:
   - alert: MyAppValueAbove1
-    expr: my_gauge{} > 1
+    expr: gauge_a{} > 1
     for: 1s
     labels:
       severity: CRITICAL
