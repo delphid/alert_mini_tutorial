@@ -5,7 +5,7 @@ services:
     networks:
       - promNet
     ports:
-      - 2112:2112
+      - 8080:80
     volumes:
       - ./log:/app/log
   prometheus:
@@ -26,6 +26,13 @@ services:
       - 9093:9093
     volumes:
       - ./config/alertmanager:/etc/alertmanager
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss
+    networks:
+      - promNet
+    ports:
+      - 3000:3000
 networks:
   promNet:
     driver: bridge

@@ -8,5 +8,5 @@ RUN go mod download
 COPY *.go ./
 RUN mkdir log
 RUN go build -o /my-app
-EXPOSE 2112
+EXPOSE 80
 CMD [ "/my-app" ]

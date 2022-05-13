@@ -1,10 +1,10 @@
 groups:
-- name: my_alert_group
-  rules:
-  - alert: MyAppValueAbove1
-    expr: gauge_a{} > 1
-    for: 1s
-    labels:
-      severity: CRITICAL
-    annotations:
-      summary: my gauge is above 1
+  - name: my_alert_group
+    rules:
+      - alert: MyAppValueAbove1
+        expr: gauge_a{} > 1
+        for: 1s
+        labels:
+          severity: CRITICAL
+        annotations:
+          summary: my gauge is above 1

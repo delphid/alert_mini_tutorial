@@ -1,4 +1,4 @@
-module try_prometheus
+module alert_mini_tutorial
 
 go 1.16
 
