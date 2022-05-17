@@ -8,6 +8,7 @@ services:
       - 8080:80
     volumes:
       - ./log:/app/log
+      - /etc/localtime:/etc/localtime:ro
   prometheus:
     container_name: prometheus
     image: prom/prometheus
@@ -17,6 +18,9 @@ services:
       - 9090:9090
     volumes:
       - ./config:/etc/prometheus
+    command:
+      - '--web.external-url=http://localhost:9090'
+      - '--config.file=/etc/prometheus/prometheus.yml'
   alertmanager:
     container_name: alertmanager
     image: prom/alertmanager
@@ -26,6 +30,9 @@ services:
       - 9093:9093
     volumes:
       - ./config/alertmanager:/etc/alertmanager
+    command:
+      - '--web.external-url=http://localhost:9093'
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
   grafana:
     container_name: grafana
     image: grafana/grafana-oss

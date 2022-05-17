@@ -1,6 +1,6 @@
 # Do you wonder how Prometheus, Alertmanager and Grafana work together?
 
-### `alert_mini_tutorial` aims to combine these 3 and a demo app into one docker-compose, and then show the relations in a minimal manner. 
+### `alert_mini_tutorial` aims to combine these 3 and a demo app into one docker-compose, and then show the relations in a minimal manner.
 
 ### This demo app acts as two roles: both the metric producer and the alert receiver.
 
@@ -13,14 +13,14 @@ In your browser, open [Prometheus](http://localhost:9090), [Alertmanager](http:/
 
 Tweak with your gauges, for example:
 
-- tune **U**p gauge_**A** with label proc=**1**
+- tune gauge_**A** **U**p with label proc=**1**
 ```shell
-make ua1
+make a-1-up
 ```
 
-- tune **D**own gauge_**A** with label proc=**1**
+- tune gauge_**A** **D**own with label proc=**1**
 ```shell
-make da1
+make a-1-down
 ```
 ...
 
