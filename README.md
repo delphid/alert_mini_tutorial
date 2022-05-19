@@ -13,14 +13,14 @@ In your browser, open [Prometheus](http://localhost:9090), [Alertmanager](http:/
 
 Tweak with your gauges, for example:
 
-- tune gauge_**A** **U**p with label proc=**1**
+- tune gauge_**A** **UP** with label proc=**1**
 ```shell
-make a-1-up
+make a-up proc=1
 ```
 
-- tune gauge_**A** **D**own with label proc=**1**
+- tune gauge_**B** **DOWN**
 ```shell
-make a-1-down
+make b-down
 ```
 ...
 
